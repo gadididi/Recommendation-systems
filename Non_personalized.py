@@ -14,14 +14,15 @@ class NonPersonalizedRecommendation:
         print(self.C)
         self.count_rate = self.ratings.pivot_table(index=['book_id'], aggfunc='size')
         self.m = self.count_rate.quantile(0.9)
-        self.weighted_rating_table = self.avg.add(self.count_rate)
-        print(self.weighted_rating_table)
+        self.weighted_rating_table = self.avg.copy()
+        self.weighted_rating_table['count_vote'] = self.count_rate
+        self.get_simply_recommendation(10)
 
     def get_simply_recommendation(self, k):
-        q_movies = self.count_rate.copy().loc[self.count_rate >= self.m]
-
-        self.weighted_rating(v,r)
-        print(q_movies)
+        q_movies = self.weighted_rating_table.copy().loc[self.weighted_rating_table['count_vote'] >= self.m]
+        q_movies['score'] = self.weighted_rating(q_movies['count_vote'], q_movies['rating'])
+        q_movies = q_movies.sort_values('score', ascending=False)
+        print(q_movies[['count_vote', 'rating', 'score']].head(10))
 
     def get_simply_place_recommendation(self, place, k):
         pass
