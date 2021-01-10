@@ -7,16 +7,15 @@ from sklearn.metrics.pairwise import pairwise_distances
 def get_recommendations(df_book_id, predicted_ratings_row, data_matrix_row, items, k=5):
     nan_indexes = data_matrix_row[data_matrix_row.isnull().any(1)]
     l = nan_indexes.index.tolist()
-    predicted_ratings_unrated = predicted_ratings_row[l]
+    predicted_ratings_unrated = predicted_ratings_row.iloc[l]
     # print(predicted_ratings_unrated)
 
-    idx = np.argsort(-predicted_ratings_unrated)
-    # print (idx)
-    sim_scores = idx[0:k]
+    idx = predicted_ratings_unrated.stack().nlargest(k)
+    print(idx)
     # print(sim_scores)
     print(3)
     # Return top k movies
-    return items['books_id'].iloc[sim_scores]
+    return items['books_id'].iloc[idx]
 
 
 class CollaborativeFiltering:
