@@ -13,8 +13,8 @@ def main():
     test = pd.read_csv('test.csv', low_memory=False)
 
     collab = CollaborativeFiltering(ratings)
-    collab.build_CF_prediction_matrix("cosine")
-    #non_personalized = NonPersonalizedRecommendation(books, ratings, users).get_simply_age_recommendation(55, 10)
+    collab.get_CF_recommendation(511, 10)
+    # non_personalized = NonPersonalizedRecommendation(books, ratings, users).get_simply_age_recommendation(55, 10)
 
 
 # Press the green button in the gutter to run the script.
