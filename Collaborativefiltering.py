@@ -10,12 +10,10 @@ def get_recommendations(df_book_id, predicted_ratings_row, data_matrix_row, item
     predicted_ratings_unrated = predicted_ratings_row.iloc[l]
     # print(predicted_ratings_unrated)
 
-    idx = predicted_ratings_unrated.stack().nlargest(k)
-    print(idx)
-    # print(sim_scores)
-    print(3)
+    idx = predicted_ratings_unrated.nlargest(k, "rating")
+    original_book_id = items['book_id']
     # Return top k movies
-    return items['books_id'].iloc[idx]
+    return items['book_id'].iloc[idx.index.tolist()]
 
 
 class CollaborativeFiltering:
