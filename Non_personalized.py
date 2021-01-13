@@ -1,6 +1,3 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 
 # Function that computes the weighted rating of each movie
