@@ -1,10 +1,12 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
 
 class ContactBasedFiltering:
     def __init__(self, books):
         self.books = books
-
+        self.similarity = None
     def build_contact_sim_metrix(self):
         books_sim_params = self.books[['book_id', 'original_title', 'authors']]
         # Apply clean_data function to your features.
@@ -15,14 +17,15 @@ class ContactBasedFiltering:
         books_sim_params['soup'] = books_sim_params.apply(create_soup, axis=1)
         count = CountVectorizer(stop_words='english')
         count_matrix = count.fit_transform(books_sim_params['soup'])
-        print(3)
+        # Compute the Cosine Similarity matrix based on the count_matrix
+        self.similarity = cosine_similarity(count_matrix, count_matrix)
 
     def get_contact_recommendation(self, book_name, k):
         pass
 
 
 def create_soup(x):
-    return ' '.join(x['original_title']) + ' ' + ' '.join(x['authors'])
+    return str(x['original_title']) + ' ' + str((x['authors']))
 
 
 def clean_data(x):
