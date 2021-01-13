@@ -9,7 +9,6 @@ class ContactBasedFiltering:
         self.books = books
         self.similarity = None
 
-
     def build_contact_sim_metrix(self):
         books_sim_params = self.books[['book_id', 'original_title', 'authors']]
         # Apply clean_data function to your features.
@@ -30,16 +29,18 @@ class ContactBasedFiltering:
         indices = pd.Series(self.books.index, index=self.books['original_title'])
 
         idx = indices[book_name]
+        if len(idx) > 1:
+            idx = idx.values[0]
         # Get the pairwsie similarity scores of all movies with that movie
         sim_scores = list(enumerate(self.similarity[idx]))
         # Sort the movies based on the similarity scores
         sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
 
         # Get the scores of the 10 most similar movies (the first is the movie we asked)
-        sim_scores = sim_scores[1:k+1]
+        sim_scores = sim_scores[1:k + 1]
         recommended = []
         for inx, score in sim_scores:
-            line = self.books[self.books["book_id"] == inx+1]
+            line = self.books[self.books["book_id"] == inx + 1]
             book = "book id: " + str(line.values[0][0]) + ", name: " + str(line.values[0][10])
             print(book)
             recommended.append(book)

@@ -13,12 +13,21 @@ def main():
     users = pd.read_csv('users.csv', low_memory=False)
     test = pd.read_csv('test.csv', low_memory=False)
 
-    # collab = CollaborativeFiltering(ratings, books)
-    # collab.get_CF_recommendation(511, 10)
+    ## part one
     non_personalized = NonPersonalizedRecommendation(books, ratings, users)
     non_personalized.get_simply_recommendation(10)
     non_personalized.get_simply_place_recommendation("Ohio", 10)
     non_personalized.get_simply_age_recommendation(28,10)
+
+    ## part two
+
+    colab = CollaborativeFiltering(ratings, books)
+    colab.get_CF_recommendation(511, 10)
+
+    ## part third
+    contact = ContactBasedFiltering(books)
+    contact.build_contact_sim_metrix()
+    contact.get_contact_recommendation("Twilight", 10)
 
 
 # Press the green button in the gutter to run the script.
