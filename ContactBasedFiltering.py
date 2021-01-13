@@ -1,12 +1,14 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-
+import pandas as pd
 
 class ContactBasedFiltering:
     def __init__(self, books):
         self.books = books
         self.similarity = None
+
+
     def build_contact_sim_metrix(self):
         books_sim_params = self.books[['book_id', 'original_title', 'authors']]
         # Apply clean_data function to your features.
@@ -21,7 +23,19 @@ class ContactBasedFiltering:
         self.similarity = cosine_similarity(count_matrix, count_matrix)
 
     def get_contact_recommendation(self, book_name, k):
-        pass
+        if self.similarity is None:
+            self.build_contact_sim_metrix()
+
+        indices = pd.Series(self.books.index, index=self.books['original_title'])
+
+        idx = indices[book_name]
+        # Get the pairwsie similarity scores of all movies with that movie
+        sim_scores = list(enumerate(self.similarity[idx]))
+        # Sort the movies based on the similarity scores
+        sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+
+        # Get the scores of the 10 most similar movies (the first is the movie we asked)
+        sim_scores = sim_scores[0:k]
 
 
 def create_soup(x):

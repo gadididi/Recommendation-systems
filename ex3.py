@@ -14,6 +14,7 @@ def main():
     test = pd.read_csv('test.csv', low_memory=False)
 
     colab = ContactBasedFiltering(books)
+    colab.get_contact_recommendation("Harry Potter and the Philosopher's Stone", 10)
     colab.build_contact_sim_metrix()
     # collab = CollaborativeFiltering(ratings, books)
     # collab.get_CF_recommendation(511, 10)
