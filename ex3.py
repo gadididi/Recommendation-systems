@@ -15,7 +15,6 @@ def main():
 
     colab = ContactBasedFiltering(books)
     colab.get_contact_recommendation("Harry Potter and the Philosopher's Stone", 10)
-    colab.build_contact_sim_metrix()
     # collab = CollaborativeFiltering(ratings, books)
     # collab.get_CF_recommendation(511, 10)
     # non_personalized = NonPersonalizedRecommendation(books, ratings, users).get_simply_age_recommendation(55, 10)

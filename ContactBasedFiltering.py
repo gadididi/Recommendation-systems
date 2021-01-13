@@ -3,6 +3,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 
+
 class ContactBasedFiltering:
     def __init__(self, books):
         self.books = books
@@ -35,7 +36,14 @@ class ContactBasedFiltering:
         sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
 
         # Get the scores of the 10 most similar movies (the first is the movie we asked)
-        sim_scores = sim_scores[0:k]
+        sim_scores = sim_scores[1:k+1]
+        recommended = []
+        for inx, score in sim_scores:
+            line = self.books[self.books["book_id"] == inx+1]
+            book = "book id: " + str(line.values[0][0]) + ", name: " + str(line.values[0][10])
+            print(book)
+            recommended.append(book)
+        return recommended
 
 
 def create_soup(x):
