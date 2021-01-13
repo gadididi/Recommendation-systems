@@ -4,11 +4,11 @@ from Collaborativefiltering import CollaborativeFiltering
 
 
 class PrecisionMeasurement:
-    def __init__(self, test, ratings, books, users):
+    def __init__(self, test, ratings, books, collaborative):
         self.books = books
         self.test = test
         self.ratings = ratings
-        self.user_based = CollaborativeFiltering(ratings, books, users)
+        self.user_based = collaborative
 
     def precision_k(self, k, sim='cosine'):
         users_precision = 0
@@ -50,7 +50,7 @@ class PrecisionMeasurement:
             users_precision += user_score
         return users_precision / len(group_by_user.index)
 
-    def RMSE(self,k, sim='cosine'):
+    def RMSE(self, k):
         users_precision = 0
         current_test = self.test.copy()
 

@@ -29,8 +29,8 @@ class CollaborativeFiltering:
         for i in chosen:
             line = books_recommend[books_recommend["book_id"] == i]
             book = "book id: " + str(line.values[0][0]) + ", name: " + str(line.values[0][10])
-            top_k.append(book)
-            print(book)
+            top_k.append(line)
+            # print(book)
         # Return top k movies
         return top_k
 
@@ -65,7 +65,7 @@ class CollaborativeFiltering:
         new_id, uni = pd.factorize(self.ratings.book_id)
         df_1 = pd.DataFrame(new_id, columns=['new_book_id'])
         # df_book_id = df_book_id.join(df_1)
-        pred_matrix, data_matrix = self.build_CF_prediction_matrix('cosine')
+        pred_matrix, data_matrix = self.build_CF_prediction_matrix('jaccard')
         user = user_id - 1
         predicted_ratings_row = pred_matrix[user]
         data_matrix_row = data_matrix[user]
