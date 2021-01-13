@@ -1,6 +1,7 @@
-
-
 # Function that computes the weighted rating of each movie
+from Tools.scripts.dutree import display
+
+
 def weighted_rating(v, R, m, C):
     # Calculation based on the IMDB formula
     return (v / (v + m) * R) + (m / (m + v) * C)
@@ -24,7 +25,15 @@ class NonPersonalizedRecommendation:
         q_movies = weighted_rating_table.copy().loc[weighted_rating_table['count_vote'] >= m]
         q_movies['score'] = weighted_rating(q_movies['count_vote'], q_movies['rating'], m, C)
         q_movies = q_movies.sort_values('score', ascending=False)
-        print(q_movies[['count_vote', 'rating', 'score']].head(k))
+        q_movies["index"] = q_movies.index
+        l = q_movies.index.tolist()
+        l_fix = []
+        for e in l:
+            l_fix.append(e + 1)
+        q_movies["book_name"] = self.books["original_title"].iloc[l]
+        res = q_movies[['book_name', 'index', 'score']].head(k)
+        print(res)
+        return res
 
     def get_simply_place_recommendation(self, place, k):
         tmp = self.users.loc[self.users['location'] == place]
@@ -40,7 +49,15 @@ class NonPersonalizedRecommendation:
         q_movies = weighted_rating_table.copy().loc[weighted_rating_table['count_vote'] >= m]
         q_movies['score'] = weighted_rating(q_movies['count_vote'], q_movies['rating'], m, C)
         q_movies = q_movies.sort_values('score', ascending=False)
-        print(q_movies[['count_vote', 'rating', 'score']].head(k))
+        q_movies["index"] = q_movies.index
+        l = q_movies.index.tolist()
+        l_fix = []
+        for e in l:
+            l_fix.append(e + 1)
+        q_movies["book_name"] = self.books["original_title"].iloc[l]
+        res = q_movies[['book_name', 'index', 'score']].head(k)
+        print(res)
+        return res
 
     def get_simply_age_recommendation(self, age, k):
         low = (age % 10) * 10 + 1
@@ -57,4 +74,12 @@ class NonPersonalizedRecommendation:
         q_movies = weighted_rating_table.copy().loc[weighted_rating_table['count_vote'] >= m]
         q_movies['score'] = weighted_rating(q_movies['count_vote'], q_movies['rating'], m, C)
         q_movies = q_movies.sort_values('score', ascending=False)
-        print(q_movies[['count_vote', 'rating', 'score']].head(k))
+        q_movies["index"] = q_movies.index
+        l = q_movies.index.tolist()
+        l_fix = []
+        for e in l:
+            l_fix.append(e + 1)
+        q_movies["book_name"] = self.books["original_title"].iloc[l]
+        res = q_movies[['book_name', 'index', 'score']].head(k)
+        print(res)
+        return res
