@@ -3,21 +3,6 @@ import numpy as np
 from sklearn.metrics.pairwise import pairwise_distances
 
 
-# Function that takes in movie title as input and outputs most similar movies
-def get_recommendations(df_book_id, predicted_ratings_row, data_matrix_row, items, k=5):
-    nan_indexes = data_matrix_row[data_matrix_row.isnull().any(1)]
-    l = nan_indexes.index.tolist()
-    predicted_ratings_unrated = predicted_ratings_row.iloc[l]
-    # print(predicted_ratings_unrated)
-
-    idx = predicted_ratings_unrated.nlargest(k, "rating")
-    original_book_id = items['book_id']
-    books_recommend = original_book_id.iloc[idx.index]
-    print(books_recommend)
-    # Return top k movies
-    return books_recommend
-
-
 class CollaborativeFiltering:
 
     def __init__(self, ratings, books):
@@ -27,6 +12,26 @@ class CollaborativeFiltering:
         self.number_of_users = None
         self.number_of_items = None
         self.data_matrix = None
+
+    # Function that takes in movie title as input and outputs most similar movies
+    def get_recommendations(self, union, predicted_ratings_row, data_matrix_row, items, k=5):
+        nan_indexes = data_matrix_row[data_matrix_row.isnull().any(1)]
+        l = nan_indexes.index.tolist()
+        predicted_ratings_unrated = predicted_ratings_row.iloc[l]
+        # print(predicted_ratings_unrated)
+
+        idx = predicted_ratings_unrated.nlargest(k, "rating").index.tolist()
+        uni = union.tolist()
+        chosen = [uni[x] for x in idx]
+        books_recommend = self.books
+        top_k = []
+        for i in chosen:
+            line = books_recommend[books_recommend["book_id"] == i]
+            book = "book id: " + str(line.values[0][0]) + ", name: " + str(line.values[0][10])
+            top_k.append(book)
+            print(book)
+        # Return top k movies
+        return top_k
 
     def build_CF_prediction_matrix(self, sim):
         if self.pred_table[sim] is not None:
@@ -55,14 +60,14 @@ class CollaborativeFiltering:
         return data_matrix
 
     def get_CF_recommendation(self, user_id, k):
-        df_book_id = (self.ratings[['book_id']].copy())
+        # df_book_id = (self.ratings[['book_id']].copy())
         new_id, uni = pd.factorize(self.ratings.book_id)
         df_1 = pd.DataFrame(new_id, columns=['new_book_id'])
-        df_book_id = df_book_id.join(df_1)
+        # df_book_id = df_book_id.join(df_1)
         pred_matrix, data_matrix = self.build_CF_prediction_matrix('cosine')
         user = user_id - 1
         predicted_ratings_row = pred_matrix[user]
         data_matrix_row = data_matrix[user]
         data_matrix_row = pd.DataFrame(data_matrix_row, columns=['rating'])
         predicted_ratings_row = pd.DataFrame(predicted_ratings_row, columns=['rating'])
-        print(get_recommendations(df_book_id, predicted_ratings_row, data_matrix_row, self.ratings, k=k))
+        return self.get_recommendations(uni, predicted_ratings_row, data_matrix_row, self.ratings, k=k)
