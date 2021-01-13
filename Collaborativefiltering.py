@@ -5,8 +5,9 @@ from sklearn.metrics.pairwise import pairwise_distances
 
 class CollaborativeFiltering:
 
-    def __init__(self, ratings, books):
+    def __init__(self, ratings, books, users):
         self.books = books
+        self.users = users
         self.ratings = ratings
         self.pred_table = {'cosine': None, 'euclidean': None, 'jaccard': None}
         self.number_of_users = None
@@ -36,8 +37,8 @@ class CollaborativeFiltering:
     def build_CF_prediction_matrix(self, sim):
         if self.pred_table[sim] is not None:
             return self.pred_table[sim], self.data_matrix
-        self.number_of_users = self.ratings.user_id.unique().shape[0]
-        self.number_of_items = self.ratings.book_id.unique().shape[0]
+        self.number_of_users = self.users.user_id.unique().shape[0]
+        self.number_of_items = self.books.book_id.unique().shape[0]
         rating_copy = self.ratings.copy()
         rating_copy.book_id, uniques = pd.factorize(self.ratings.book_id)
         self.data_matrix = self.create_data_matrix(rating_copy)

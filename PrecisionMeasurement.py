@@ -5,7 +5,6 @@ from Collaborativefiltering import CollaborativeFiltering
 
 class PrecisionMeasurement:
     def __init__(self, test, ratings, books, users):
-        self.users = users
         self.books = books
         self.test = test
         self.ratings = ratings
