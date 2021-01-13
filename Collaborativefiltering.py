@@ -12,13 +12,16 @@ def get_recommendations(df_book_id, predicted_ratings_row, data_matrix_row, item
 
     idx = predicted_ratings_unrated.nlargest(k, "rating")
     original_book_id = items['book_id']
+    books_recommend = original_book_id.iloc[idx.index]
+    print(books_recommend)
     # Return top k movies
-    return items['book_id'].iloc[idx.index.tolist()]
+    return books_recommend
 
 
 class CollaborativeFiltering:
 
-    def __init__(self, ratings):
+    def __init__(self, ratings, books):
+        self.books = books
         self.ratings = ratings
         self.pred_table = {'cosine': None, 'euclidean': None, 'jaccard': None}
         self.number_of_users = None
@@ -46,7 +49,7 @@ class CollaborativeFiltering:
         data_matrix[:] = np.nan
         for line in rating_copy.itertuples():
             user = line[1] - 1
-            book = line[2] - 1
+            book = line[2]
             rating = line[3]
             data_matrix[user, book] = rating
         return data_matrix
