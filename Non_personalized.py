@@ -31,7 +31,7 @@ class NonPersonalizedRecommendation:
         for e in l:
             l_fix.append(e + 1)
         q_movies["book_name"] = self.books["original_title"].iloc[l]
-        res = q_movies[['book_name', 'index', 'score']].head(k)
+        res = q_movies[['book_name', 'score']].head(k)
         print(res)
         return res
 
@@ -55,7 +55,7 @@ class NonPersonalizedRecommendation:
         for e in l:
             l_fix.append(e + 1)
         q_movies["book_name"] = self.books["original_title"].iloc[l]
-        res = q_movies[['book_name', 'index', 'score']].head(k)
+        res = q_movies[['book_name', 'score']].head(k)
         print(res)
         return res
 
@@ -80,6 +80,6 @@ class NonPersonalizedRecommendation:
         for e in l:
             l_fix.append(e + 1)
         q_movies["book_name"] = self.books["original_title"].iloc[l]
-        res = q_movies[['book_name', 'index', 'score']].head(k)
+        res = q_movies[['book_name', 'score']].head(k)
         print(res)
         return res
