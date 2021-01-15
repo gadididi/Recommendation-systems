@@ -14,17 +14,16 @@ def main():
     users = pd.read_csv('users.csv', low_memory=False)
     test = pd.read_csv('test.csv', low_memory=False)
 
-    collab = CollaborativeFiltering(ratings, books, users)
+    # collab = CollaborativeFiltering(ratings, books, users)
     # collab.build_CF_prediction_matrix('cosine')
     # collab.build_CF_prediction_matrix('euclidean')
     # collab.build_CF_prediction_matrix('jaccard')
 
-    precision_measurement = PrecisionMeasurement(test, ratings, books, collab)
+    # precision_measurement = PrecisionMeasurement(test, ratings, books, collab)
 
     # print(precision_measurement.precision_k(10))
     # print(precision_measurement.ARHR(10))
-    print(precision_measurement.RMSE())
-
+    # print(precision_measurement.RMSE())
 
     # ## part one
     # non_personalized = NonPersonalizedRecommendation(books, ratings, users)
@@ -34,8 +33,8 @@ def main():
     #
     # ## part two
     #
-    # colab = CollaborativeFiltering(ratings, books)
-    # colab.get_CF_recommendation(511, 10)
+    colab = CollaborativeFiltering(ratings, books, users)
+    colab.get_CF_recommendation(1, 10)
     #
     # ## part third
     # contact = ContactBasedFiltering(books)

@@ -1,6 +1,13 @@
+import heapq
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import pairwise_distances
+
+
+def keep_top_k(arr, k):
+    smallest = heapq.nlargest(k, arr)[-1]
+    arr[arr < smallest] = 0  # replace anything lower than the cut off with 0
+    return arr
 
 
 class CollaborativeFiltering:
@@ -13,6 +20,7 @@ class CollaborativeFiltering:
         self.number_of_users = None
         self.number_of_items = None
         self.data_matrix = None
+        self.curr_k = 10
 
     # Function that takes in movie title as input and outputs most similar movies
     def get_recommendations(self, union, predicted_ratings_row, data_matrix_row, items, k=5):
@@ -30,7 +38,7 @@ class CollaborativeFiltering:
             line = books_recommend[books_recommend["book_id"] == i]
             book = "book id: " + str(line.values[0][0]) + ", name: " + str(line.values[0][10])
             top_k.append(line)
-            # print(book)
+            print(book)
         # Return top k movies
         return top_k
 
@@ -46,6 +54,7 @@ class CollaborativeFiltering:
         ratings_diff = (self.data_matrix - mean_user_rating)
         ratings_diff[np.isnan(ratings_diff)] = 0
         user_similarity = 1 - pairwise_distances(ratings_diff, metric=sim)
+        user_similarity = np.array([keep_top_k(np.array(arr), self.k) for arr in user_similarity])
         self.pred_table[sim] = mean_user_rating + user_similarity.dot(ratings_diff) / np.array(
             [np.abs(user_similarity).sum(axis=1)]).T
         return self.pred_table[sim], self.data_matrix
@@ -61,11 +70,12 @@ class CollaborativeFiltering:
         return data_matrix
 
     def get_CF_recommendation(self, user_id, k):
+        self.k = k
         # df_book_id = (self.ratings[['book_id']].copy())
         new_id, uni = pd.factorize(self.ratings.book_id)
         df_1 = pd.DataFrame(new_id, columns=['new_book_id'])
         # df_book_id = df_book_id.join(df_1)
-        pred_matrix, data_matrix = self.build_CF_prediction_matrix('euclidean')
+        pred_matrix, data_matrix = self.build_CF_prediction_matrix('cosine')
         user = user_id - 1
         predicted_ratings_row = pred_matrix[user]
         data_matrix_row = data_matrix[user]
