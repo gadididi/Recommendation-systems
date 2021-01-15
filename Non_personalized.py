@@ -1,7 +1,3 @@
-# Function that computes the weighted rating of each movie
-from Tools.scripts.dutree import display
-
-
 def weighted_rating(v, R, m, C):
     # Calculation based on the IMDB formula
     return (v / (v + m) * R) + (m / (m + v) * C)
