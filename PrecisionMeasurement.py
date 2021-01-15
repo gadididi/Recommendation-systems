@@ -1,4 +1,5 @@
 import math
+import pandas as pd
 
 from Collaborativefiltering import CollaborativeFiltering
 
@@ -50,31 +51,20 @@ class PrecisionMeasurement:
         return users_precision / len(group_by_user.index)
 
     def RMSE(self):
-        users_precision = 0
-        pred_table, data_matrix = self.user_based.build_CF_prediction_matrix('cosine')
-        rmse = 0
-        users = 0
-        none = 0
+        pred_table, _ = self.user_based.build_CF_prediction_matrix('jaccard')
+        _, uniques = pd.factorize(self.ratings.book_id)
+        book_id_dict = dict()
+        for i in range(len(uniques.values)):
+            book_id_dict[uniques.values[i]] = i
+        compare = 0
         for line in self.test.values:
-            user_id = line[0]
+            user_id = line[0] - 1
             book_id = line[1]
             rating = line[2]
-        #     books_calc = 0
-        #     compare = 0
-        #     for c in range(len(data_matrix[r])):
-        #         if not math.isnan(data_matrix[r][c]):
-        #             compare += (pred_table[r][c] - data_matrix[r][c]) ** 2
-        #             books_calc += 1
-        #     if books_calc != 0:
-        #         rmse += math.sqrt(compare / books_calc)
-        #         users += 1
-        #     else:
-        #         none += 1
-        #
-        # if users != 0:
-        #     rmse = rmse/users
 
-        print(none)
+            normalized_book_id = book_id_dict[book_id]
+            compare += (rating - pred_table[user_id][normalized_book_id]) ** 2
+        rmse = math.sqrt(compare / len(self.test.values))
         return rmse
 
     def pre_possessor(self, k):
