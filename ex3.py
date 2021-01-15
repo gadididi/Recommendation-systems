@@ -16,14 +16,14 @@ def main():
 
     collab = CollaborativeFiltering(ratings, books, users)
     # collab.build_CF_prediction_matrix('cosine')
-    # collab.build_CF_prediction_matrix('euclidean')
-    collab.build_CF_prediction_matrix('jaccard')
+    collab.build_CF_prediction_matrix('euclidean')
+    # collab.build_CF_prediction_matrix('jaccard')
 
     precision_measurement = PrecisionMeasurement(test, ratings, books, collab)
 
-    print(precision_measurement.precision_k(10))
+    # print(precision_measurement.precision_k(10))
     print(precision_measurement.ARHR(10))
-    print(precision_measurement.RMSE(10))
+    # print(precision_measurement.RMSE())
 
 
     # ## part one
