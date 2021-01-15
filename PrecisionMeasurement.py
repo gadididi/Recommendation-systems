@@ -51,7 +51,7 @@ class PrecisionMeasurement:
         return users_precision / len(group_by_user.index)
 
     def RMSE(self):
-        pred_table, _ = self.user_based.build_CF_prediction_matrix('jaccard')
+        pred_table, _ = self.user_based.build_CF_prediction_matrix('cosine')
         _, uniques = pd.factorize(self.ratings.book_id)
         book_id_dict = dict()
         for i in range(len(uniques.values)):

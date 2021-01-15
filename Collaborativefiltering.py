@@ -1,4 +1,6 @@
 import heapq
+import heapq
+
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import pairwise_distances
@@ -24,11 +26,11 @@ class CollaborativeFiltering:
 
     # Function that takes in movie title as input and outputs most similar movies
     def get_recommendations(self, union, predicted_ratings_row, data_matrix_row, items, k=5):
+
         nan_indexes = data_matrix_row[data_matrix_row.isnull().any(1)]
         l = nan_indexes.index.tolist()
         predicted_ratings_unrated = predicted_ratings_row.iloc[l]
         # print(predicted_ratings_unrated)
-
         idx = predicted_ratings_unrated.nlargest(k, "rating").index.tolist()
         uni = union.tolist()
         chosen = [uni[x] for x in idx]
