@@ -22,12 +22,13 @@ class NonPersonalizedRecommendation:
         q_movies['score'] = weighted_rating(q_movies['count_vote'], q_movies['rating'], m, C)
         q_movies = q_movies.sort_values('score', ascending=False)
         q_movies["index"] = q_movies.index
-        l = q_movies.index.tolist()
+        res = q_movies[['score']].head(k)
+        l = res.index.tolist()
         l_fix = []
         for e in l:
-            l_fix.append(e + 1)
-        q_movies["book_name"] = self.books["original_title"].iloc[l]
-        res = q_movies[['book_name', 'score']].head(k)
+            l_fix.append(e - 1)
+        q_movies["book_name"] = self.books["original_title"].iloc[l_fix]
+
         print(res)
         return res
 
@@ -49,8 +50,8 @@ class NonPersonalizedRecommendation:
         l = q_movies.index.tolist()
         l_fix = []
         for e in l:
-            l_fix.append(e + 1)
-        q_movies["book_name"] = self.books["original_title"].iloc[l]
+            l_fix.append(e - 1)
+        q_movies["book_name"] = self.books["original_title"].iloc[l_fix]
         res = q_movies[['book_name', 'score']].head(k)
         print(res)
         return res
@@ -74,8 +75,8 @@ class NonPersonalizedRecommendation:
         l = q_movies.index.tolist()
         l_fix = []
         for e in l:
-            l_fix.append(e + 1)
-        q_movies["book_name"] = self.books["original_title"].iloc[l]
+            l_fix.append(e - 1)
+        q_movies["book_name"] = self.books["original_title"].iloc[l_fix]
         res = q_movies[['book_name', 'score']].head(k)
         print(res)
         return res

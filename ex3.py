@@ -40,10 +40,10 @@ def main():
     uncomment to run 
     """
 
-    # non_personalized = NonPersonalizedRecommendation(books, ratings, users)
-    # non_personalized.get_simply_recommendation(10)
-    # non_personalized.get_simply_place_recommendation("Ohio", 10)
-    # non_personalized.get_simply_age_recommendation(28,10)
+    non_personalized = NonPersonalizedRecommendation(books, ratings, users)
+    non_personalized.get_simply_recommendation(10)
+    non_personalized.get_simply_place_recommendation("Ohio", 10)
+    non_personalized.get_simply_age_recommendation(28,10)
 
     """
     part 2:
