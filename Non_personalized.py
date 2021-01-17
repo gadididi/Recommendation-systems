@@ -26,6 +26,7 @@ class NonPersonalizedRecommendation:
         res.index -= 1
         l = res.index.tolist()
         res["book_name"] = self.books["original_title"].iloc[l]
+        res.index += 1
 
         print(res)
         return res
@@ -49,6 +50,7 @@ class NonPersonalizedRecommendation:
         res.index -= 1
         l = res.index.tolist()
         res["book_name"] = self.books["original_title"].iloc[l]
+        res.index += 1
         print(res)
         return res
 
@@ -72,5 +74,6 @@ class NonPersonalizedRecommendation:
         res.index -= 1
         l = res.index.tolist()
         res["book_name"] = self.books["original_title"].iloc[l]
+        res.index += 1
         print(res)
         return res
