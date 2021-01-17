@@ -27,7 +27,7 @@ class NonPersonalizedRecommendation:
         l_fix = []
         for e in l:
             l_fix.append(e - 1)
-        q_movies["book_name"] = self.books["original_title"].iloc[l_fix]
+        movies = self.books[self.books.index.isin(l_fix)]
 
         print(res)
         return res
@@ -57,8 +57,8 @@ class NonPersonalizedRecommendation:
         return res
 
     def get_simply_age_recommendation(self, age, k):
-        low = (age % 10) * 10 + 1
-        high = (age % 10) * 10 + 10
+        low = (age // 10) * 10 + 1
+        high = (age // 10) * 10 + 10
         tmp = self.users.loc[(self.users['age'] <= high) & (self.users['age'] >= low)]
         tmp = tmp.join(self.ratings.set_index('user_id'), how='left', on='user_id')
         avg = tmp.groupby(['book_id']).mean()
